@@ -47,7 +47,7 @@
 <aside
   id="cross-sell-{{ block.id }}"
   class="cross-sell"
-  aria-label="{{ block_settings.heading | default: 'Pairs well with' | escape }}"
+  aria-label="{{ block_settings.heading | default: 'Pairs with' | escape }}"
   {{ block.shopify_attributes }}
 >
   <div
@@ -66,11 +66,6 @@
       --border-radius: {{ block_settings.border_radius }}px;
     "
   >
-    {% if block_settings.heading != blank %}
-      <div class="section-resource-list__content">
-        <h2 class="cross-sell__heading h4">{{ block_settings.heading | escape }}</h2>
-      </div>
-    {% endif %}
 
     {% content_for 'blocks' %}
 
@@ -126,6 +121,9 @@
           {{ classes }}
         "
       >
+    {% if block_settings.heading != blank %}
+      <h2 class="cross-sell__heading h4">{{ block_settings.heading | escape }}</h2>
+    {% endif %}
         {% case block_settings.layout_type %}
           {% when 'grid' %}
             {{ list_items }}
@@ -134,7 +132,8 @@
               ref: 'crossSellCarousel',
               slides: slides,
               slide_count: slide_count,
-              settings: block_settings
+              settings: block_settings,
+              arrows_position: 'top'
             %}
         {% endcase %}
       </div>
@@ -148,11 +147,15 @@
           "
           style="--resource-list-gap: {{ block_settings.columns_gap }}px;"
         >
+              {% if block_settings.heading != blank %}
+      <h2 class="cross-sell__heading h4">{{ block_settings.heading | escape }}</h2>
+    {% endif %}
           {% render 'resource-list-carousel',
             ref: 'crossSellCarouselMobile',
             slides: slides,
             slide_count: slide_count,
-            settings: block_settings
+            settings: block_settings,
+            arrows_position: 'top'
           %}
         </div>
       {% endif %}
