@@ -42,6 +42,7 @@
 {% render 'variant-picker-styles' %}
 {% render 'product-badges-styles' %}
 {% render 'resource-list-styles' %}
+{{ 'cross-sell.css' | asset_url | stylesheet_tag }}
 
 <aside
   id="cross-sell-{{ block.id }}"
