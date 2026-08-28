@@ -23,13 +23,6 @@
     assign cross_sell_products = block_settings.product_list
   endif
 
-  case block_settings.layout_type
-    when 'grid'
-      assign classes = 'resource-list--grid'
-    when 'carousel'
-      assign classes = 'resource-list__carousel'
-  endcase
-
   if block_settings.background_color != blank
     render 'contrast-override', background_color: block_settings.background_color, section_id: block.id
   endif
@@ -61,7 +54,6 @@
       {% render 'spacing-style', settings: block_settings %}
       {% render 'gap-style', value: block_settings.gap %}
       --resource-list-column-gap-desktop: {{ block_settings.columns_gap }}px;
-      --resource-list-row-gap-desktop: {{ block_settings.rows_gap }}px;
       --resource-list-columns-mobile: repeat(auto-fill, minmax(9.25rem, 1fr));
       --border-radius: {{ block_settings.border_radius }}px;
     "
@@ -80,11 +72,9 @@
                 closest.product: product
               %}
             </div>
-            {% if block_settings.layout_type == 'carousel' or block_settings.carousel_on_mobile %}
-              {% unless forloop.last %}
-                <!--@list/split-->
-              {% endunless %}
-            {% endif %}
+            {% unless forloop.last %}
+              <!--@list/split-->
+            {% endunless %}
           {% endif %}
         {% endfor %}
       {% elsif request.visual_preview_mode or request.design_mode %}
@@ -96,11 +86,9 @@
               closest.product: null
             %}
           </div>
-          {% if block_settings.layout_type == 'carousel' or block_settings.carousel_on_mobile %}
-            {% unless forloop.last %}
-              <!--@list/split-->
-            {% endunless %}
-          {% endif %}
+          {% unless forloop.last %}
+            <!--@list/split-->
+          {% endunless %}
         {% endfor %}
       {% endif %}
     {% endcapture %}
@@ -112,58 +100,17 @@
     %}
 
     {% if slide_content != blank %}
-      <div
-        class="
-          resource-list
-          cross-sell-carousel
-          cross-sell-carousel-desktop
-          {% if block_settings.carousel_on_mobile and block_settings.layout_type != 'carousel' %}
-            hidden--mobile
-          {% endif %}
-          {{ classes }}
-        "
-      >
-        {% case block_settings.layout_type %}
-          {% when 'grid' %}
-            {% if block_settings.heading != blank %}
-              <h2 class="cross-sell__heading h4">{{ block_settings.heading | escape }}</h2>
-            {% endif %}
-            {{ list_items }}
-          {% when 'carousel' %}
-            {% render 'resource-list-carousel',
-              ref: 'crossSellCarousel',
-              slides: slides,
-              slide_count: slide_count,
-              settings: block_settings,
-              arrows_position: 'top',
-              heading: block_settings.heading,
-              slide_width_max: '400px'
-            %}
-        {% endcase %}
+      <div class="resource-list resource-list__carousel cross-sell-carousel">
+        {% render 'resource-list-carousel',
+          ref: 'crossSellCarousel',
+          slides: slides,
+          slide_count: slide_count,
+          settings: block_settings,
+          arrows_position: 'top',
+          heading: block_settings.heading,
+          slide_width_max: '400px'
+        %}
       </div>
-
-      {% if block_settings.carousel_on_mobile and block_settings.layout_type != 'carousel' %}
-        <div
-          class="
-            resource-list
-            hidden--desktop
-            cross-sell-carousel
-            cross-sell-carousel-mobile
-            force-full-width
-          "
-          style="--resource-list-gap: {{ block_settings.columns_gap }}px;"
-        >
-          {% render 'resource-list-carousel',
-            ref: 'crossSellCarouselMobile',
-            slides: slides,
-            slide_count: slide_count,
-            settings: block_settings,
-            arrows_position: 'top',
-            heading: block_settings.heading,
-            slide_width_max: '400px'
-          %}
-        </div>
-      {% endif %}
     {% endif %}
   </div>
 </aside>
@@ -224,29 +171,6 @@
       "content": "t:content.cards_layout"
     },
     {
-      "type": "select",
-      "id": "layout_type",
-      "label": "t:settings.layout_style",
-      "options": [
-        {
-          "value": "grid",
-          "label": "t:options.grid"
-        },
-        {
-          "value": "carousel",
-          "label": "t:options.carousel"
-        }
-      ],
-      "default": "carousel"
-    },
-    {
-      "type": "checkbox",
-      "id": "carousel_on_mobile",
-      "label": "t:settings.carousel_on_mobile",
-      "default": true,
-      "visible_if": "{{ block.settings.layout_type == 'grid' }}"
-    },
-    {
       "type": "range",
       "id": "max_products",
       "label": "t:settings.product_count",
@@ -263,24 +187,11 @@
       "max": 100,
       "step": 1,
       "unit": "px",
-      "default": 16,
-      "visible_if": "{{ block.settings.layout_type == 'grid' or block.settings.layout_type == 'carousel' }}"
-    },
-    {
-      "type": "range",
-      "id": "rows_gap",
-      "label": "t:settings.vertical_gap",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 16,
-      "visible_if": "{{ block.settings.layout_type == 'grid' }}"
+      "default": 16
     },
     {
       "type": "header",
-      "content": "t:content.carousel_navigation",
-      "visible_if": "{{ block.settings.layout_type == 'carousel' or block.settings.carousel_on_mobile == true }}"
+      "content": "t:content.carousel_navigation"
     },
     {
       "type": "select",
@@ -308,8 +219,7 @@
           "label": "t:options.none"
         }
       ],
-      "default": "arrow",
-      "visible_if": "{{ block.settings.layout_type == 'carousel' or block.settings.carousel_on_mobile == true }}"
+      "default": "arrow"
     },
     {
       "type": "select",
@@ -330,7 +240,7 @@
         }
       ],
       "default": "none",
-      "visible_if": "{{ block.settings.icons_style != 'none' and block.settings.layout_type == 'carousel' or block.settings.carousel_on_mobile == true }}"
+      "visible_if": "{{ block.settings.icons_style != 'none' }}"
     },
     {
       "type": "header",
@@ -413,7 +323,6 @@
       "category": "t:categories.product",
       "settings": {
         "heading": "Pairs well with",
-        "layout_type": "carousel",
         "max_products": 4
       },
       "blocks": {
