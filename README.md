@@ -1,4 +1,4 @@
-# Pact front-end take home project
+# Cross-sell Shopify Widget
 
 Minimal Online Store 2.0 theme with the essentials to run and extend.
 
@@ -9,7 +9,7 @@ Minimal Online Store 2.0 theme with the essentials to run and extend.
 ## Requirements
 
 - Node.js >= 20.10 (I'm using v24.6.0)
-- Shopify CLI >= latest () https://shopify.dev/docs/api/shopify-cli
+- Shopify CLI >= v4.7.0 https://shopify.dev/docs/api/shopify-cli
 
 ## Local setup
 
@@ -22,7 +22,6 @@ Minimal Online Store 2.0 theme with the essentials to run and extend.
 - You can also use the dev command to generate a preview link and a link to the theme editor for the development theme.
 
 ## NOTE: Content .json files
-Shopify theme content is stored inside of the .json files added to the .gitignore file.
 
 To safely push everything EXCEPT .json files, run the following command:
 `shopify theme push --ignore "*.json"`
