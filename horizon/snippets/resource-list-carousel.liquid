@@ -7,6 +7,7 @@
   @param {object} settings - The block or sections settings from the parent block/section.
   @param {string} [slide_width_max] - The maximum width of the slides in the carousel.
   @param {string} [arrows_position] - The position of the slideshow arrows (left, center, right, top).
+  @param {string} [heading] - Optional heading rendered immediately before the slideshow arrows. Falls back to settings.heading when omitted.
 
   @example
   {% render 'resource-list-carousel', slides: slides, slide_count: slide_count, settings: block.settings %}
@@ -39,6 +40,16 @@
   {% endfor %}
 {% endcapture %}
 
+{% liquid
+  assign carousel_heading = heading | default: settings.heading
+%}
+
+{% if carousel_heading != blank %}
+  {% capture header %}
+    <h2 class="resource-list__carousel-heading h4">{{ carousel_heading | escape }}</h2>
+  {% endcapture %}
+{% endif %}
+
 <div style="{{ gutter_style }} --slide-width-max: {{ slide_width_max | default: '300px' }};">
   {% render 'slideshow',
     ref: slideshow_ref,
@@ -48,6 +59,7 @@
     icon_style: settings.icons_style,
     icon_shape: settings.icons_shape,
     arrows_position: arrows_position,
+    header: header,
     auto_hide_controls: false,
     infinite: false,
     initial_slide: 0,
@@ -101,6 +113,10 @@
      Using 16px for better alignment with our spacing scale */
     margin-block: -16px;
     padding-block: 16px;
+  }
+
+  .resource-list__carousel-heading {
+    margin: 0;
   }
 
   .resource-list__carousel slideshow-arrows {

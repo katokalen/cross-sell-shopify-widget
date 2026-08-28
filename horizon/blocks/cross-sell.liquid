@@ -115,17 +115,19 @@
       <div
         class="
           resource-list
+          cross-sell-carousel
+          cross-sell-carousel-desktop
           {% if block_settings.carousel_on_mobile and block_settings.layout_type != 'carousel' %}
             hidden--mobile
           {% endif %}
           {{ classes }}
         "
       >
-    {% if block_settings.heading != blank %}
-      <h2 class="cross-sell__heading h4">{{ block_settings.heading | escape }}</h2>
-    {% endif %}
         {% case block_settings.layout_type %}
           {% when 'grid' %}
+            {% if block_settings.heading != blank %}
+              <h2 class="cross-sell__heading h4">{{ block_settings.heading | escape }}</h2>
+            {% endif %}
             {{ list_items }}
           {% when 'carousel' %}
             {% render 'resource-list-carousel',
@@ -133,7 +135,8 @@
               slides: slides,
               slide_count: slide_count,
               settings: block_settings,
-              arrows_position: 'top'
+              arrows_position: 'top',
+              heading: block_settings.heading
             %}
         {% endcase %}
       </div>
@@ -143,19 +146,19 @@
           class="
             resource-list
             hidden--desktop
+            cross-sell-carousel
+            cross-sell-carousel-mobile
             force-full-width
           "
           style="--resource-list-gap: {{ block_settings.columns_gap }}px;"
         >
-              {% if block_settings.heading != blank %}
-      <h2 class="cross-sell__heading h4">{{ block_settings.heading | escape }}</h2>
-    {% endif %}
           {% render 'resource-list-carousel',
             ref: 'crossSellCarouselMobile',
             slides: slides,
             slide_count: slide_count,
             settings: block_settings,
-            arrows_position: 'top'
+            arrows_position: 'top',
+            heading: block_settings.heading
           %}
         </div>
       {% endif %}

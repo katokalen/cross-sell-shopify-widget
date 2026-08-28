@@ -22,7 +22,7 @@
   @param {string} [icon_shape] - The shape of the icon background (none, circle, square), defaults to 'none'
   @param {string} [arrows_position] - The position of the arrows, defaults to 'bottom'. Supports 'left', 'center', 'right', 'top', 'bottom'.
   @param {string} [attributes] - Additional attributes to add to the slideshow component
-  @param {boolean} [header] - The title of the slideshow
+  @param {string} [header] - Optional HTML rendered immediately before the slideshow arrows
 
   @example
   {% render 'slideshow', slides: slides, slide_count: collection.products.size, ref: 'mobileSlideshow' %}
@@ -97,10 +97,10 @@
 
   {{ attributes }}
 >
-  {% if header != blank %}
-    {{ header }}
-  {% endif %}
   <slideshow-container ref="slideshowContainer">
+    {% if header != blank %}
+      {{ header }}
+    {% endif %}
     {% if show_arrows %}
       {% render 'slideshow-arrows', icon_style: icon_style, icon_shape: icon_shape, arrows_position: arrows_position %}
     {% endif %}
