@@ -1,11 +1,102 @@
 .cross-sell {
     margin-top: 2rem;
     font-family: var(--font-family-monospace);
-    position: relative;
+    overflow: hidden;
 }
 
-.cross-sell__heading {
+.cross-sell__heading,
+.cross-sell .resource-list__carousel-heading {
     font-family: var(--font-family-monospace);
     text-transform: uppercase;
-    border: 1px solid red;
+}
+
+/* Carousel Styling */
+.cross-sell slideshow-slides {
+    margin-top: 0;
+}
+
+/* Carousel Button alignment overrides, show all the time, align with title */
+.cross-sell-carousel .slideshow-control,
+.cross-sell-carousel .slideshow-control[disabled] {
+    display: block;
+    animation: none;
+}
+
+.cross-sell-carousel .slideshow-control {
+    opacity: 1;
+}
+
+.cross-sell slideshow-arrows {
+    padding-inline: 87% ;
+}
+
+.cross-sell-carousel .slideshow-control[disabled] {
+    opacity: 0.5;
+}
+
+/* Remove hide/show animation that was firing on hover */
+.cross-sell-carousel slideshow-component:hover,
+.cross-sell-carousel slideshow-component:focus-within > slideshow-container > slideshow-arrows .slideshow-control {
+    animation: none;
+}
+
+/* Product Content */
+/* 2 columns - image on left, content on right */
+.cross-sell .product-card__content.product-grid__card {
+  display: grid;
+  grid-template-columns: minmax(3rem, 30%) minmax(0, 9fr) minmax(0, 3fr);
+  align-items: start;
+  align-content: start;
+  column-gap: 5px;
+  row-gap: 0;
+  max-height: 170px;
+}
+
+/* All content */
+.cross-sell .product-card__content > * {
+  grid-column: 2 / -1;
+}
+
+/* Left column: product image */
+.cross-sell .product-card__content > .card-gallery {
+  grid-column: 1;
+}
+
+/* Variants: 70% of the content row */
+.cross-sell .product-card__content > swatches-variant-picker-component {
+  grid-column: 2;
+}
+
+/* Buy buttons: full content width by default (no variants) */
+.cross-sell .product-card__content > .buy-buttons-block {
+  grid-column: 2 / -1;
+  align-self: end;
+}
+
+/* Buy buttons sit in the right column when immediately after variants */
+.cross-sell .product-card__content > swatches-variant-picker-component + .buy-buttons-block {
+  grid-column: 3;
+}
+
+.button-secondary {
+    font-family: var(--font-family-monospace);
+}
+
+/* Hide gallery quick-add, no room in this layout */
+.cross-sell--no-quick-add .product-card__content {
+  --quick-add-display: none !important;
+  --quick-add-mobile-display: none !important;
+  --quick-add-mobile-opacity: 0 !important;
+}
+
+.cross-sell--no-quick-add :is(quick-add-component, .quick-add) {
+  display: none !important;
+}
+
+/* ~400px slides on desktop; keep a flexible max on smaller viewports */
+@media screen and (min-width: 750px) {
+  .cross-sell .resource-list__carousel .resource-list__slide {
+    --slide-width: 400px;
+    width: 400px;
+  }
 }

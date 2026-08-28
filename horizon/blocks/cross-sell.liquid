@@ -46,7 +46,7 @@
 
 <aside
   id="cross-sell-{{ block.id }}"
-  class="cross-sell"
+  class="cross-sell cross-sell--no-quick-add"
   aria-label="{{ block_settings.heading | default: 'Pairs with' | escape }}"
   {{ block.shopify_attributes }}
 >
@@ -136,7 +136,8 @@
               slide_count: slide_count,
               settings: block_settings,
               arrows_position: 'top',
-              heading: block_settings.heading
+              heading: block_settings.heading,
+              slide_width_max: '400px'
             %}
         {% endcase %}
       </div>
@@ -158,7 +159,8 @@
             slide_count: slide_count,
             settings: block_settings,
             arrows_position: 'top',
-            heading: block_settings.heading
+            heading: block_settings.heading,
+            slide_width_max: '400px'
           %}
         </div>
       {% endif %}
