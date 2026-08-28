@@ -731,7 +731,7 @@ h4,
 .h4.h4,
 .text-block.h4 > *,
 .text-block.h4 :is(h1, h2, h3, h4, h5, h6) {
-  font-family: var(--font-h4--family);
+  font-family: var(--font-family-monospace);
   font-style: var(--font-h4--style);
   font-weight: var(--font-h4--weight);
   font-size: var(--font-h4--size);
@@ -753,7 +753,7 @@ h5,
 .h5.h5,
 .text-block.h5 > *,
 .text-block.h5 :is(h1, h2, h3, h4, h5, h6) {
-  font-family: var(--font-h5--family);
+  font-family: var(--font-family-monospace);
   font-style: var(--font-h5--style);
   font-weight: var(--font-h5--weight);
   font-size: var(--font-h5--size);

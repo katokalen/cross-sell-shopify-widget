@@ -1,3 +1,11 @@
 .cross-sell {
-    border: 2px solid red;
+    margin-top: 2rem;
+    font-family: var(--font-family-monospace);
+    position: relative;
+}
+
+.cross-sell__heading {
+    font-family: var(--font-family-monospace);
+    text-transform: uppercase;
+    border: 1px solid red;
 }
