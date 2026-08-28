@@ -2,6 +2,21 @@
   box-sizing: border-box;
 }
 
+@font-face {
+  font-family: JetBrains Mono;
+  font-style: normal;
+  font-weight: 400;
+  src: url('JetBrainsMono-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: JetBrains Mono;
+  font-style: normal;
+  font-weight: 500;
+  src: url('JetBrainsMono-Medium.woff2') format('woff2');
+  font-display: swap;
+}
+
 body {
   color: var(--color-foreground);
   background: var(--color-background);
@@ -20,6 +35,7 @@ body {
   --surface-transition-timing: var(--ease-out-quad);
   --submenu-animation-speed: 360ms;
   --submenu-animation-easing: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --font-family-monospace: "JetBrains Mono", monospace;
 }
 
 html {
