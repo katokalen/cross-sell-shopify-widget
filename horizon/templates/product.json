@@ -288,10 +288,8 @@
                   "selling-plans-ski-wax"
                 ],
                 "max_products": 4,
-                "columns_gap": 10,
                 "icons_style": "arrow",
                 "icons_shape": "none",
-                "gap": 10,
                 "border_radius": 0,
                 "background_color": "{{ settings.color_palette.background }}",
                 "padding-block-start": 0,

@@ -48,12 +48,9 @@
       {% if block_settings.background_color != blank %}color-custom-{{ block.id }}{% endif %}
       block-resource-list
       spacing-style
-      gap-style
     "
     style="
       {% render 'spacing-style', settings: block_settings %}
-      {% render 'gap-style', value: block_settings.gap %}
-      --resource-list-column-gap-desktop: {{ block_settings.columns_gap }}px;
       --resource-list-columns-mobile: repeat(auto-fill, minmax(9.25rem, 1fr));
       --border-radius: {{ block_settings.border_radius }}px;
     "
@@ -123,7 +120,7 @@
   .cross-sell .block-resource-list {
     display: flex;
     flex-direction: column;
-    row-gap: var(--gap);
+    row-gap: 0.75rem;
     min-width: 0;
     min-height: 0;
     container-type: inline-size;
@@ -167,10 +164,6 @@
       "info": "Used when the product has no custom.cross_sell metafield value."
     },
     {
-      "type": "header",
-      "content": "t:content.cards_layout"
-    },
-    {
       "type": "range",
       "id": "max_products",
       "label": "t:settings.product_count",
@@ -178,16 +171,6 @@
       "max": 8,
       "step": 1,
       "default": 4
-    },
-    {
-      "type": "range",
-      "id": "columns_gap",
-      "label": "t:settings.horizontal_gap",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 16
     },
     {
       "type": "header",
@@ -245,16 +228,6 @@
     {
       "type": "header",
       "content": "t:content.layout"
-    },
-    {
-      "type": "range",
-      "id": "gap",
-      "label": "t:settings.gap",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 12
     },
     {
       "type": "range",
