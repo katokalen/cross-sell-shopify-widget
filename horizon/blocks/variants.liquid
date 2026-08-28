@@ -20,12 +20,12 @@
   {% render 'variant-picker-styles' %}
 
   <swatches-variant-picker-component
-    class="product-card-variants spacing-style"
+    class="product-card-variants"
     data-product-id="{{ product_resource.id }}"
     data-product-url="{{ product_resource.url }}"
     data-product-handle="{{ product_resource.handle }}"
+    data-variant-picker-style="dropdown"
     style="
-      {% render 'spacing-style', settings: block_settings %}
       {% if block_settings.hide_label %}
         --product-card-variants-label-display: none;
       {% endif %}
@@ -115,6 +115,10 @@
   .product-card-variants {
     display: block;
     width: 100%;
+    /* Sit above the stretched product-card link so the select is clickable */
+    position: relative;
+    z-index: var(--layer-raised, 2);
+    pointer-events: auto;
   }
 
   .product-card-variants__option {
@@ -127,10 +131,13 @@
 
   .product-card-variants .variant-option__select-wrapper {
     width: 100%;
+    pointer-events: auto;
   }
 
   .product-card-variants .variant-option__select {
     width: 100%;
+    pointer-events: auto;
+    cursor: pointer;
   }
 {% endstylesheet %}
 
