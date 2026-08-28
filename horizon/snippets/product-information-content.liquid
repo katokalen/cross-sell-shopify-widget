@@ -293,20 +293,21 @@
     }
   }
 
-  /* Wider sidebar for large screens */
+  /* Wider sidebar for large screens.
+     4fr / 3fr ≈ 57% media / 43% details (was 2fr / 1fr ≈ 67% / 33%). */
   @media screen and (min-width: 1200px) {
     .product-information__grid:not(
         .product-information__grid--half,
         .product-information--media-none
       ).product-information--media-left {
-      grid-template-columns: 2fr 1fr;
+      grid-template-columns: 4fr 3fr;
     }
 
     .product-information__grid:not(
         .product-information__grid--half,
         .product-information--media-none
       ).product-information--media-right {
-      grid-template-columns: 1fr 2fr;
+      grid-template-columns: 3fr 4fr;
     }
   }
 
