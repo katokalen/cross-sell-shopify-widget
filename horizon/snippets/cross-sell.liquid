@@ -1,0 +1,96 @@
+{% comment %}
+  Manual cross-sell products for the product form column.
+
+  Accepts:
+  - product: {Object} current product
+  - block: {Object} block settings
+  - section_id: {String} parent section id
+{% endcomment %}
+
+{%- liquid
+  assign cross_sell_products = product.metafields.custom.cross_sell.value
+  if cross_sell_products == blank or cross_sell_products.size == 0
+    assign cross_sell_products = block.settings.product_list
+  endif
+
+  assign cross_sell_count = 0
+  if cross_sell_products != blank
+    for cross_sell_product in cross_sell_products
+      if cross_sell_product != blank and cross_sell_product.id != product.id
+        assign cross_sell_count = cross_sell_count | plus: 1
+      endif
+    endfor
+  endif
+-%}
+
+{%- if cross_sell_count > 0 -%}
+  {{ 'component-card.css' | asset_url | stylesheet_tag }}
+  {{ 'component-complementary-products.css' | asset_url | stylesheet_tag }}
+  {{ 'cross-sell.css' | asset_url | stylesheet_tag }}
+  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
+  {{ 'component-price.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'cross-sell-card.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'cross-sell-slider.js' | asset_url }}" defer="defer"></script>
+
+  <aside
+    class="cross-sell complementary-products complementary-products-contains-quick-add"
+    aria-label="{{ block.settings.heading | default: 'Pairs well with' | escape }}"
+    {{ block.shopify_attributes }}
+  >
+    <div class="complementary-products__container">
+      <cross-sell-slider class="slider-mobile-gutter">
+        {%- if block.settings.heading != blank -%}
+          <h2 class="h3 cross-sell-title">{{ block.settings.heading | escape }}</h2>
+        {%- endif -%}
+        <ul
+          id="Slider-{{ block.id }}"
+          class="cross-sell__track grid product-grid contains-card contains-card--product slider slider--everywhere{% if cross_sell_count > 1 %} grid--peek{% endif %}"
+          role="list"
+          aria-label="{{ 'general.slider.name' | t }}"
+        >
+          {%- assign slide_index = 0 -%}
+          {%- for cross_sell_product in cross_sell_products -%}
+            {%- if cross_sell_product != blank and cross_sell_product.id != product.id -%}
+              {%- assign slide_index = slide_index | plus: 1 -%}
+              <li
+                id="Slide-{{ block.id }}-{{ slide_index }}"
+                class="grid__item slider__slide"
+              >
+                {% render 'cross-sell-card',
+                  card_product: cross_sell_product,
+                  media_aspect_ratio: block.settings.image_ratio,
+                  lazy_load: true,
+                  section_id: section_id
+                %}
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+
+        {%- if cross_sell_count > 1 -%}
+          <div class="slider-buttons no-js-hidden">
+            <button
+              type="button"
+              class="slider-button slider-button--prev"
+              name="previous"
+              aria-label="{{ 'general.slider.previous_slide' | t }}"
+              aria-controls="Slider-{{ block.id }}"
+            >
+              {% render 'icon-arrow-left' %}
+            </button>
+            <button
+              type="button"
+              class="slider-button slider-button--next"
+              name="next"
+              aria-label="{{ 'general.slider.next_slide' | t }}"
+              aria-controls="Slider-{{ block.id }}"
+            >
+              {% render 'icon-arrow-right' %}
+            </button>
+          </div>
+        {%- endif -%}
+      </cross-sell-slider>
+    </div>
+  </aside>
+{%- endif -%}
