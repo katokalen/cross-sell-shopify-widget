@@ -34,9 +34,10 @@
     opacity: 0.5;
 }
 
+/* TODO - this is gross, clean this up */
 /* Remove hide/show animation that was firing on hover */
-.cross-sell-carousel slideshow-component:hover,
-.cross-sell-carousel slideshow-component:focus-within > slideshow-container > slideshow-arrows .slideshow-control {
+.cross-sell-carousel slideshow-component:hover:not(:has(slideshow-controls:hover)) > slideshow-container > slideshow-arrows .slideshow-control,
+.cross-sell-carousel slideshow-component:focus-within:not(:has(slideshow-controls:hover)) > slideshow-container > slideshow-arrows .slideshow-control {
     animation: none;
 }
 
