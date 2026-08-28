@@ -1,0 +1,4 @@
+[environments.production]
+store = "pact-fbc9diqo.myshopify.com"
+[environments.dev]
+store = "pact-fbc9diqo.myshopify.com"
