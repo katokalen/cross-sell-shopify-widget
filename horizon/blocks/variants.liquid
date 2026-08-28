@@ -1,0 +1,204 @@
+{%- doc -%}
+  Product card block that shows the first variant option group as a select dropdown.
+{%- enddoc -%}
+
+{% liquid
+  assign product_resource = closest.product
+  if request.visual_preview_mode and product_resource == blank
+    assign product_resource = collections.all.products.first
+  endif
+
+  assign block_settings = block.settings
+  assign first_option = blank
+
+  if product_resource != blank and product_resource.has_only_default_variant == false
+    assign first_option = product_resource.options_with_values.first
+  endif
+%}
+
+{% if first_option != blank %}
+  {% render 'variant-picker-styles' %}
+
+  <swatches-variant-picker-component
+    class="product-card-variants spacing-style"
+    data-product-id="{{ product_resource.id }}"
+    data-product-url="{{ product_resource.url }}"
+    data-product-handle="{{ product_resource.handle }}"
+    style="
+      {% render 'spacing-style', settings: block_settings %}
+      {% if block_settings.hide_label %}
+        --product-card-variants-label-display: none;
+      {% endif %}
+    "
+    {{ block.shopify_attributes }}
+  >
+    <form>
+      <div class="variant-option variant-option--dropdowns product-card-variants__option">
+        <label
+          class="product-card-variants__label"
+          for="ProductCardVariants-{{ block.id }}-{{ product_resource.id }}"
+        >
+          {{- first_option.name | escape -}}
+        </label>
+        <div class="variant-option__select-wrapper">
+          <select
+            id="ProductCardVariants-{{ block.id }}-{{ product_resource.id }}"
+            name="options[{{ first_option.name | escape }}]"
+            class="variant-option__select"
+            aria-label="{{ first_option.name | escape }}"
+          >
+            {%- for option_value in first_option.values -%}
+              <option
+                value="{{ option_value | escape }}"
+                data-input-id="{{ first_option.position }}-{{ forloop.index0 }}"
+                data-option-name="{{ first_option.name | escape }}"
+                data-option-value-id="{{ option_value.id }}"
+                data-variant-id="{{ option_value.variant.id }}"
+                data-connected-product-url="{{ option_value.product_url }}"
+                {% if option_value.variant.featured_media %}
+                  data-option-media-id="{{ option_value.variant.featured_media.id }}"
+                {% endif %}
+                {% if option_value.selected %}
+                  selected="selected"
+                {% endif %}
+              >
+                {%- if option_value.available == false -%}
+                  {{ option_value | escape }} - {{ 'content.unavailable' | t }}
+                {%- else -%}
+                  {{- option_value | escape -}}
+                {%- endif -%}
+              </option>
+            {%- endfor -%}
+          </select>
+          <svg
+            aria-hidden="true"
+            focusable="false"
+            class="icon icon-caret"
+            viewBox="0 0 10 6"
+          >
+            {%- render 'icon', icon: 'caret' -%}
+          </svg>
+        </div>
+      </div>
+
+      <script type="application/json">
+        {{ product_resource.selected_or_first_available_variant | json }}
+      </script>
+    </form>
+  </swatches-variant-picker-component>
+{% elsif request.visual_preview_mode %}
+  <div
+    class="product-card-variants spacing-style"
+    style="{% render 'spacing-style', settings: block_settings %}"
+    {{ block.shopify_attributes }}
+  >
+    <div class="variant-option variant-option--dropdowns product-card-variants__option">
+      <label class="product-card-variants__label">Size</label>
+      <div class="variant-option__select-wrapper">
+        <select class="variant-option__select" disabled>
+          <option>S</option>
+        </select>
+        <svg
+          aria-hidden="true"
+          focusable="false"
+          class="icon icon-caret"
+          viewBox="0 0 10 6"
+        >
+          {%- render 'icon', icon: 'caret' -%}
+        </svg>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  .product-card-variants {
+    display: block;
+    width: 100%;
+  }
+
+  .product-card-variants__option {
+    width: 100%;
+  }
+
+  .product-card-variants__label {
+    display: var(--product-card-variants-label-display, block);
+  }
+
+  .product-card-variants .variant-option__select-wrapper {
+    width: 100%;
+  }
+
+  .product-card-variants .variant-option__select {
+    width: 100%;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.variants",
+  "tag": null,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:content.resource_reference_product_variant_picker"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_label",
+      "label": "Hide option name",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.variants",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}
